@@ -1,0 +1,32 @@
+{
+	"exclude": [
+		"*.log",
+		"backup/some/path/**"
+	],
+	"backup": [
+		{
+			"//comment": "Local backup - file:///path/to/backup",
+			"type": "backup",
+			"name": "prod-vm-1",
+			"source": "file:///path/to/backup"
+		},
+		{
+			"//comment": "Backup using agent - ssh://user@host:port/backup",
+			"type": "backup",
+			"name": "prod-vm-1",
+			"source": "ssh://agent@prod-vm-1:4156/backup"
+		},
+		{
+			"//comment": "Backup using agent",
+			"type": "backup",
+			"name": "prod-vm-2",
+			"source": "ssh://agent@prod-vm-2:4156/backup"
+		},
+		{
+			"//comment": "Backup without agent also fine - ssh://user@host:port/path/to/backup",
+			"type": "backup",
+			"name": "prod-vm-3",
+			"source": "ssh://user@10.0.0.1/path/to/backup"
+		}
+	]
+}

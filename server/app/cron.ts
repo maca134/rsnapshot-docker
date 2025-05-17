@@ -1,4 +1,3 @@
-import { sleep } from "bun";
 import { CONFIG_PATH, RSNAPSHOT_CONF, RSNAPSHOT_CONF_EXTRA, SSH_KNOWNHOSTS, } from "./constants";
 import { rsnapshot, type BackupConfig } from "./rsnapshot";
 
@@ -13,5 +12,3 @@ try {
 } catch (error) {
 	console.error("Error running rsnapshot");
 }
-
-await sleep(10000);

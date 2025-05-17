@@ -6,6 +6,4 @@ if [ -n "$KEY" ]; then
     chmod 600 /home/agent/.ssh/authorized_keys
 fi
 
-echo "Starting rsnapshot backup agent"
-
 exec "$@"
