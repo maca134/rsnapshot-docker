@@ -62,14 +62,11 @@ export async function rsnapshot({ period, config, knownhosts, rsnapshot_conf, rs
 
 	await Bun.file(rsnapshot_conf_extra).write(backup);
 
-	console.log(backup);
-
-	console.log(__dirname);
-
 	await $`rsnapshot -c ${rsnapshot_conf} configtest`;
 
 	await $`rsnapshot -c ${rsnapshot_conf} ${period}`;
 
-	await $`rsnapshot -c ${rsnapshot_conf} du`;
-
+	await $`echo "Backup complete at ${new Date().toISOString()}" > /snapshots/du.log`;
+	
+	await $`rsnapshot -c ${rsnapshot_conf} du >> /snapshots/du.log`;
 }
