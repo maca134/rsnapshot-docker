@@ -57,7 +57,7 @@ if (!(await exists(CONFIG_PATH))) {
 	console.log("Config file created. Please edit it to add your backup sources.");
 }
 
-/*try {
+try {
 	await rsnapshot({
 		period: "hourly",
 		config: await Bun.file(CONFIG_PATH).json() as BackupConfig,
@@ -67,6 +67,6 @@ if (!(await exists(CONFIG_PATH))) {
 	});
 } catch (error) {
 	console.error("Error running rsnapshot");
-}*/
+}
 
 await $`/usr/local/bin/supercronic --passthrough-logs /app/crontab`;

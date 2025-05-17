@@ -1,8 +1,9 @@
 services:
     server:
-        build:
-            context: server
-            dockerfile: Dockerfile
+        # build:
+        #     context: server
+        #     dockerfile: Dockerfile
+        image: maca134/rsnapshot-docker-server:latest
         container_name: rsnapshot-server
         depends_on:
             - agent
@@ -11,9 +12,10 @@ services:
             - ./.docker/config:/config
             - ./.docker/snapshots:/snapshots
     agent:
-        build:
-            context: agent
-            dockerfile: Dockerfile
+        # build:
+        #     context: agent
+        #     dockerfile: Dockerfile
+        image: maca134/rsnapshot-docker-agent:latest
         container_name: rsnapshot-agent
         restart: unless-stopped
         volumes:
