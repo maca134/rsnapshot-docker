@@ -9,7 +9,7 @@ services:
     agent:
         image: maca134/rsnapshot-docker-agent:latest
         restart: unless-stopped
-        volumes: # set to the path where you want to store the backups - it can be anywhere but /backup is the default
+        volumes: # set to the path where you want to store the backups - has to be inside /backup
             - ./backup:/backup/files:ro
         environment: # set key to what the server creates after the first run - /config/ssh/server_id.pub
             - KEY=ssh-ed25519 AAAAC3NpzPhqlZDI1NTE5A2X0/tu1fM4bbawbq2pszaC1AAAIMEoMlYRChSV6YPcPGHT

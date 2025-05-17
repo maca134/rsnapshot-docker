@@ -11,16 +11,16 @@
 			"source": "file:///path/to/backup"
 		},
 		{
-			"//comment": "Backup using agent - ssh://user@host:port/backup",
+			"//comment": "Backup using agent",
 			"type": "backup",
 			"name": "prod-vm-1",
-			"source": "ssh://agent@prod-vm-1:4156/backup"
+			"source": "agent://prod-vm-1:4156"
 		},
 		{
 			"//comment": "Backup using agent",
 			"type": "backup",
 			"name": "prod-vm-2",
-			"source": "ssh://agent@prod-vm-2:4156/backup"
+			"source": "agent://prod-vm-2:4156"
 		},
 		{
 			"//comment": "Backup without agent also fine - ssh://user@host:port/path/to/backup",

@@ -6,6 +6,7 @@ export type BackupConfig = {
 		type: 'backup' | 'script';
 		name: string;
 		source: string;
+		noagent?: boolean;
 	}[];
 };
 
@@ -22,12 +23,11 @@ export async function rsnapshot({ period, config, knownhosts, rsnapshot_conf, rs
 		config.backup
 			.filter((b) => b.type === 'backup')
 			.map((b) => new URL(b.source))
-			.filter((url) => url.protocol === 'ssh:')
+			.filter((url) => url.protocol === 'ssh:' || url.protocol === 'agent:')
 			.filter((url, i, arr) => arr.findIndex((u) => u.hostname === url.hostname && u.port === url.port) === i)
 			.map(
-				(url) =>
-					$`ssh-keyscan -p "${url.port || '22'}" -H "${url.hostname}" >> ${knownhosts}`
-						.catch(() => console.error(`Error adding "${url.hostname}" to known hosts.`))
+				(url) => $`ssh-keyscan -p "${url.port || url.protocol === 'agent:' ? '4156' : '22'}" -H "${url.hostname}" >> ${knownhosts}`
+					.catch(() => console.error(`Error adding "${url.hostname}" to known hosts.`))
 			)
 	);
 
@@ -38,8 +38,15 @@ export async function rsnapshot({ period, config, knownhosts, rsnapshot_conf, rs
 				case 'backup': {
 					const url = new URL(b.source);
 					switch (url.protocol) {
+						case 'agent:': {
+							return `backup\tagent@${url.hostname}:/backup\t${b.name}/\t+rsync_long_args=--rsync-path="sudo rsync",+ssh_args=-p${url.port || 4156}`;
+						};
 						case 'ssh:': {
-							return `backup\t${url.username}@${url.hostname}:${url.pathname}\t${b.name}/\t+ssh_args=-p${url.port || '22'}`;
+							let line = `backup\t${url.username}@${url.hostname}:${url.pathname}\t${b.name}/\t`;
+							if (url.port) {
+								line += `+ssh_args=-p${url.port} `;
+							}
+							return line;
 						};
 
 						case 'file:': {
@@ -60,13 +67,16 @@ export async function rsnapshot({ period, config, knownhosts, rsnapshot_conf, rs
 		})
 	].join('\n');
 
+	console.log('rsnapshot config:');
+	console.log(backup);
+
 	await Bun.file(rsnapshot_conf_extra).write(backup);
 
 	await $`rsnapshot -c ${rsnapshot_conf} configtest`;
 
 	await $`rsnapshot -c ${rsnapshot_conf} ${period}`;
 
-	await $`echo "Backup complete at ${new Date().toISOString()}" > /snapshots/du.log`;
-	
-	await $`rsnapshot -c ${rsnapshot_conf} du >> /snapshots/du.log`;
+	await $`echo "Backup complete at ${new Date().toISOString()}" > /snapshots/report.log`;
+
+	await $`rsnapshot -c ${rsnapshot_conf} du >> /snapshots/report.log`;
 }

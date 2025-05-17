@@ -20,4 +20,4 @@ services:
             - ./server:/backup/server:ro
             - ./agent:/backup/agent:ro
         environment:
-            - KEY=ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMpzPhq2X0/tu1fM4bbawbq2psEoMlYRChSV6YPcPGHT
+            - KEY=ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPGBCt5frIMWeH4flLUfDJyDXtWFl1yEwWZxlPRR+bqx
