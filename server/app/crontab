@@ -1,0 +1,5 @@
+*       */4     *       *       *       /usr/bin/flock -n /tmp/rsnapshot.lock bun /app/cron.ts hourly
+30      3       *       *       *	    bun /app/cron.ts daily
+10      3       *       *       1	    bun /app/cron.ts weekly
+30      2       1       *       *	    bun /app/cron.ts monthly
+10      2       1       1       *	    bun /app/cron.ts yearly

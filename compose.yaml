@@ -1,0 +1,23 @@
+services:
+    server:
+        build:
+            context: server
+            dockerfile: Dockerfile
+        container_name: rsnapshot-server
+        depends_on:
+            - agent
+        user: "1000:1000"
+        volumes:
+            - ./.docker/config:/config
+            - ./.docker/snapshots:/snapshots
+    agent:
+        build:
+            context: agent
+            dockerfile: Dockerfile
+        container_name: rsnapshot-agent
+        restart: unless-stopped
+        volumes:
+            - ./server:/backup/server:ro
+            - ./agent:/backup/agent:ro
+        environment:
+            - KEY=ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMpzPhq2X0/tu1fM4bbawbq2psEoMlYRChSV6YPcPGHT
