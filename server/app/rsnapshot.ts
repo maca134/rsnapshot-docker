@@ -74,9 +74,9 @@ export async function rsnapshot({ period, config, knownhosts, rsnapshot_conf, rs
 
 	await $`rsnapshot -c ${rsnapshot_conf} configtest`;
 
-	await $`rsnapshot -c ${rsnapshot_conf} ${period}`;
+	await $`rsnapshot -c ${rsnapshot_conf} ${period} 2>&1 | tee /snapshots/output-${period}.log`;
 
-	await $`echo "Backup complete at ${new Date().toISOString()}" > /snapshots/report.log`;
+	await $`echo "Backup complete at ${new Date().toISOString()}" | tee /snapshots/report.log`;
 
-	await $`rsnapshot -c ${rsnapshot_conf} du >> /snapshots/report.log`;
+	await $`rsnapshot -c ${rsnapshot_conf} du | tee -a /snapshots/report.log`;
 }
