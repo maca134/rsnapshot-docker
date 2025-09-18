@@ -32,6 +32,7 @@ export async function rsnapshot({ period, config, knownhosts, rsnapshot_conf, rs
 	);
 
 	const backup = [
+		`verbose\t${process.env.LOGLEVEL ? process.env.LOGLEVEL : '2'}`,
 		...config.exclude.map((e) => `exclude\t${e}`),
 		...config.backup.map((b) => {
 			switch (b.type) {
