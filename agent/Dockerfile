@@ -28,8 +28,6 @@ RUN ssh-keygen -A
 
 EXPOSE 22
 
-ENV KEY=""
-
 ENTRYPOINT ["/init-agent.sh"]
 
 CMD ["/usr/sbin/sshd", "-D", "-e"]
